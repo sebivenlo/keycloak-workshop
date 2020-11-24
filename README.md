@@ -17,6 +17,7 @@ We're going to use an extended Keycloak image that includes a custom theme and s
 
 First, build the custom providers and themes with:
 
+    cd keycloak-containers-demo/
     mvn clean install
 
 Then build the image with:
