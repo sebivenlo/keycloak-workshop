@@ -15,19 +15,25 @@ Administration console: can manage the users and realms.
 A realm manages a set of users, credentials, roles, and groups. A user belongs to and logs into a realm. Realms are isolated from one another and can only manage and authenticate the users that they control.
 
 1. Add new realm 
-   * Click add realm top left and add a name)
+   * Click add realm top left and add a name (to be used with this demo it has to have the demo name!!)
+
 2. Add application to the realm 
-   * Click on clients -> create -> input client ID ( js-console) -> change access type to public -> valid redirect URIs (http://localhost:8000/*) -> add web origin because we want to let the application make ajax requests so we can refresh the app during the demo ( http://localhost:8000)
-3. Configure email setting
-   * Go to master realm
-   * Set an email address for the current user
+   * Click on clients -> create -> input client ID: js-console -> change access type to public -> valid redirect URIs: http://localhost:8000/* -> add web origin because we want to let the application make ajax requests so we can refresh the app during the demo web origin: http://localhost:8000
+
+3. Configure email setting so we can let the user register themselves
+   * Go to master realm -> users -> select the admin user
+   * Set an email address for the admin user
    * Go back to demo realm->realm settings->email and use the MailHog credentials for demo purposes. host: demo-mail ; port:1025; email: keycloak@localhost
+
 4. Instead of the admin having to create all the users we can let the users register for themselves 
-   * Enable registration in the realm ( user registration and verify email)
+   * Enable registration in the realm settings -> login ( user registration and verify email should be on)
+
 5. Open example application
    * Register a user
    * Verify email in mailhog
-You can always change the look and feel of the forms coming from keycloak. 
+
+You can always change the look and feel of the forms coming from keycloak by adding custom themes.
+
 6. Add more information for the user in the system
    * Go to users and select the registered user
    * Go to attribute and add a new attribute ( avatar_url, value: https://cdn.pixabay.com/photo/2020/11/02/13/25/north-sea-oats-5706656_960_720.jpg)
@@ -35,7 +41,8 @@ You can always change the look and feel of the forms coming from keycloak.
    * Create a mapper with name: avatar_url; user attribute: avatar_url; token claim name: avatar_url; claim json type: string;
    * Change client scopes inside the client js-console
 
-The id token is used by the application to establish the authentication of the user. The access token is used to invoke microservices ( in this way the user doesn`t have to login again).
+The id token is used by the application to establish the authentication of the user. The access token is used to invoke microservices (in this way the user doesnt have to login again).
+
 ### Client Scope 
 When a client is registered, you must define protocol mappers and role scope mappings for that client. It is often useful to store a client scope, to make creating new clients easier by sharing some common settings. This is also useful for requesting some claims or roles to be conditionally based on the value of scope parameter. Keycloak provides the concept of a client scope for this.
 
@@ -48,9 +55,9 @@ Roles identify a type or category of user. Admin, user, manager, and employee ar
 
 8. Concept of Roles
     * Go to roles
-    * Create 2 new roles ( user and admin)
-    * Add roles to the user
-    * Go to client and change the roles inside the scope
+    * Create 2 new roles (user and admin)
+    * Go to Users->Role Mappings and assign the newly created roles
+    * Go to Clients->Scope and turn on Full Scope Allowed; assign the available roles inside the scope
     * If we assign a role any microservice that require the admin role cannot be invoked from this application regardless if a user with those roles logs in or not.
     * Refresh token in application and check access_token.
     * Assign admin role and refresh
@@ -70,7 +77,9 @@ Each group can have childgroups, attributes or roles.
      * Add a mapper ( group membership) with names to the previously created scope
      * Add another mapper type with user attribute and name user_type to the previously created scope
      * Go to the client and give access to the client scope.
-### Ldap server
+
+### Ldap server import
+
 10. Import users from ldap server
      * Go to user federation
      * Add ldap provider
@@ -80,7 +89,9 @@ Each group can have childgroups, attributes or roles.
      * Users DN: ou=People,dc=example,dc=org
      * Bind DN: cd=admin,dc=example,dc=org
      * Bind credential: admin
+
 ### Identity Providers
+
 11. Arrange login with github
      * Go to Identity Providers and select GitHub
      * Navigate to https://github.com/settings/applications/new
@@ -93,13 +104,12 @@ Each group can have childgroups, attributes or roles.
  
 ### Events
 
-Keycloack supports events, such as a bad password input or new token generated there is an event generated in the system. You can build a custom event listener for certain events or you can store them for a defined time so it doesn`t fill the database.
-
+Keycloack supports events, such as a bad password input or new token generated there is an event generated in the system. You can build a custom event listener for certain events or you can store them for a defined time so it doesnt fill the database.
     * Go to events->config
     * Save events on and save 
     * enter the wrong password upon login into the application and check if events appeared.
 
-### Authentication
+### Flow Of Authentication
 In Keycloak you can change the flow of an authentication.
     * Go to authentication
     * Click on copy on top right
